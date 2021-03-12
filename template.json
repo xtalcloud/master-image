@@ -1,0 +1,73 @@
+{
+  "builders": [
+    {
+      "boot_command": "<up><wait><tab> inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg PACKER_USER=root PACKER_AUTHORIZED_KEY={{ .SSHPublicKey | urlquery }}<enter><wait>",
+      "boot_wait": "5s",
+      "cpus": "{{ user `cpus` }}",
+      "disk_size": "{{user `disk_size`}}",
+      "guest_os_type": "RedHat_64",
+      "guest_additions_mode": "disable",
+      "hard_drive_interface": "sata",
+      "headless": "{{ user `headless` }}",
+      "http_directory": "{{user `http_directory`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_url": "{{template_dir}}/{{user `iso_name`}}",
+      "memory": "{{ user `memory` }}",
+      "output_directory": "{{ user `build_directory` }}/packer-{{user `template`}}-virtualbox",
+      "shutdown_command": "/sbin/halt -h -p",
+      "ssh_port": 22,
+      "ssh_username": "root",
+      "ssh_timeout": "10000s",
+      "type": "virtualbox-iso",
+      "vm_name": "{{ user `template` }}",
+      "export_opts": [
+        "--manifest"
+      ],
+      "format": "ova"
+    }
+  ],
+  "provisioners": [
+    {
+      "environment_vars": [
+        "HOME_DIR=/home/vagrant",
+        "http_proxy={{user `http_proxy`}}",
+        "https_proxy={{user `https_proxy`}}",
+        "no_proxy={{user `no_proxy`}}"
+      ],
+      "execute_command": "sh -eux '{{.Path}}'",
+      "expect_disconnect": true,
+      "scripts": [
+        "{{template_dir}}/scripts/motd.sh",
+        "{{template_dir}}/scripts/issue.sh",
+        "{{template_dir}}/scripts/sshd.sh",
+        "{{template_dir}}/scripts/networking.sh",
+        "{{template_dir}}/scripts/cleanup.sh",
+        "{{template_dir}}/scripts/minimize.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "box_basename": "xtal-master",
+    "build_directory": "../builds",
+    "build_timestamp": "{{isotime \"2019102650405\"}}",
+    "cpus": "4",
+    "disk_size": "30000",
+    "git_revision": "__unknown_git_revision__",
+    "guest_additions_url": "",
+    "headless": "",
+    "http_directory": "{{template_dir}}/http",
+    "http_proxy": "{{env `http_proxy`}}",
+    "https_proxy": "{{env `https_proxy`}}",
+    "iso_checksum": "30fd8dff2d29a384bd97886fa826fa5be872213c81e853eae3f9d9674f720ad0",
+    "iso_name": "rhel-8.3-x86_64-dvd.iso",
+    "memory": "4092",
+    "mirror": "https://linux-mirrors.fnal.gov/linux/centos",
+    "mirror_directory": "8-stream/isos/x86_64",
+    "name": "xtal-master",
+    "no_proxy": "{{env `no_proxy`}}",
+    "template": "xtal-master-x86_64-{{ user `vm_version` }}",
+    "version": "TIMESTAMP",
+    "vm_version": "0.2.2"
+  }
+}
