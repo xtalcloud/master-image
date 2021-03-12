@@ -55,7 +55,6 @@ truncate -s 0 /etc/machine-id
 
 echo "Clear the history so our install commands aren't there"
 rm -f /root/.wget-hsts
-export HISTSIZE=0
 
 #
 #  Run AIDE to document the current state of the
@@ -66,3 +65,5 @@ export HISTSIZE=0
 
 aide --init
 mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+
+export HISTSIZE=0
