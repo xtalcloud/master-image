@@ -71,6 +71,6 @@
     "no_proxy": "{{env `no_proxy`}}",
     "template": "xtal-el-x86_64-{{ user `vm_version` }}",
     "version": "TIMESTAMP",
-    "vm_version": "0.2.10"
+    "vm_version": "0.2.11"
   }
 }
