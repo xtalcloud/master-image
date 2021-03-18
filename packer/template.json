@@ -11,9 +11,9 @@
       "headless": "{{ user `headless` }}",
       "http_directory": "{{user `http_directory`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_url": "{{template_dir}}/{{user `iso_name`}}",
+      "iso_url": "{{template_dir}}/../isos/{{user `iso_name`}}",
       "memory": "{{ user `memory` }}",
-      "output_directory": "{{ user `build_directory` }}/packer-{{user `template`}}-virtualbox",
+      "output_directory": "{{ user `build_directory` }}/{{user `template`}}-virtualbox",
       "shutdown_command": "/sbin/halt -h -p",
       "ssh_port": 22,
       "ssh_username": "root",
@@ -52,7 +52,7 @@
   ],
   "variables": {
     "box_basename": "xtal-master",
-    "build_directory": "../builds",
+    "build_directory": "{{template_dir}}/../builds",
     "build_timestamp": "{{isotime \"2019102650405\"}}",
     "cpus": "4",
     "disk_size": "30000",
@@ -62,15 +62,15 @@
     "http_directory": "{{template_dir}}/http",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "iso_checksum": "30fd8dff2d29a384bd97886fa826fa5be872213c81e853eae3f9d9674f720ad0",
-    "iso_name": "rhel-8.3-x86_64-dvd.iso",
+    "iso_checksum": "",
+    "iso_name": "",
     "memory": "4092",
-    "mirror": "https://linux-mirrors.fnal.gov/linux/centos",
-    "mirror_directory": "8-stream/isos/x86_64",
+    "mirror": "",
+    "mirror_directory": "",
     "name": "Xtal EL {{user `vm_version`}}",
     "no_proxy": "{{env `no_proxy`}}",
     "template": "xtal-el-x86_64-{{ user `vm_version` }}",
     "version": "TIMESTAMP",
-    "vm_version": "0.2.5"
+    "vm_version": "0.2.10"
   }
 }

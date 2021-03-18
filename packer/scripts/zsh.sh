@@ -80,6 +80,6 @@ curl -Lo /usr/share/zsh/site-functions/_zsh "$GH_RAW/junegunn/fzf/0.25.1/shell/c
 curl -Lo /etc/zsh/fzf.zsh "$GH_RAW/junegunn/fzf/0.25.1/shell/key-bindings.zsh"
 curl -Lo /usr/bin/fzf-tmux "$GH_RAW/junegunn/fzf/0.25.1/bin/fzf-tmux" && chmod 0755 /usr/bin/fzf-tmux
 
-sed -i 's#^root:#root:x:0:0:root:/root:/bin/zsh#' /etc/passwd
+chsh -s /usr/bin/zsh
 echo '# ~/.zshrc' > /root/.zshrc
 echo '# ~/.zshrc' > /etc/skel/.zshrc
