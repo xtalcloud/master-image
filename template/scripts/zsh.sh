@@ -4,11 +4,13 @@
 #  zsh configration
 #
 
+ZSH_CUSTOM_DIR=/etc/zsh
+
 if ! rpm -q zsh >/dev/null; then
   dnf install -y zsh
 fi
 
-mkdir /etc/zsh
+mkdir -p $ZSH_CUSTOM_DIR
 cat >> /etc/zshrc <<'EOF'
 unsetopt BEEP
 
@@ -22,18 +24,29 @@ bindkey "^[[A" history-beginning-search-backward-end
 bindkey "^[[B" history-beginning-search-forward-end
 
 ZPATH=/etc/zsh:$ZPATH
-autoload -Uz compinit && compinit
+
+# Basic auto/tab complete:
+autoload -U compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)		# Include hidden files.
+
 autoload -U +X bashcompinit && bashcompinit
 source /etc/bash_completion.d
 source /usr/share/bash-completion/completions
 
 # configure history retention
 HISTSIZE=10000              # How many lines of history to keep in memory
-HISFILE=~/.zsh_history      # Where to save history to disk
 SAVEHIST=10000              # Number of history entries to save to disk
+HISTFILE=~/.zsh_history      # Where to save history to disk
 setopt appendhistory        # Append history to the history file (no overwriting)
 setopt sharehistory         # Share history across terminals, e.g. when using tmux
 setopt incappendhistory     # Immediately append to the history file, not just when a term is killed
+
+# Edit line in vim with ctrl-v:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^v' edit-command-line
 
 export LANG=en_US.UTF-8
 PROMPT='%n%F{cyan}@%m%f:%3~%F{cyan}%# %f'
@@ -66,19 +79,6 @@ alias 9='cd -9'
 EOF
 
 echo "# /etc/zsh/complete.zsh" > /etc/zsh/complete.zsh
-
-# install fzf
-
-GH_RAW='https://raw.githubusercontent.com'
-(
-	cd /usr/bin
-	curl -L "https://github.com/junegunn/fzf-bin/releases/download/0.23.1/fzf-0.23.1-linux_amd64.tgz" | tar xz
-)
-mkdir -p /usr/share/vim/vimfiles/plugin/start/fzf/plugin
-curl -Lo /usr/share/vim/vimfiles/plugin/start/fzf/plugin/fzf.vim "$GH_RAW/junegunn/fzf/0.25.1/plugin/fzf.vim"
-curl -Lo /usr/share/zsh/site-functions/_zsh "$GH_RAW/junegunn/fzf/0.25.1/shell/completion.zsh"
-curl -Lo /etc/zsh/fzf.zsh "$GH_RAW/junegunn/fzf/0.25.1/shell/key-bindings.zsh"
-curl -Lo /usr/bin/fzf-tmux "$GH_RAW/junegunn/fzf/0.25.1/bin/fzf-tmux" && chmod 0755 /usr/bin/fzf-tmux
 
 chsh -s /usr/bin/zsh
 echo '# ~/.zshrc' > /root/.zshrc

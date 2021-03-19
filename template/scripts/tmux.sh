@@ -1,12 +1,15 @@
 #!/bin/sh -eux
 
-#  
+#
+#  TMUX
+#
 #  Configures tmux to automatically attach session upon login
 #  and detach session upon running "exit" with only a single
 #  pane/window open OR upon running "logoff" with any amount
 #  of panes/windows open.
 #
-#  To disable this functionality set TMUX_AUTO_ATTACH=0.
+#  To disable this functionality set TMUX_AUTO_ATTACH=0 before
+#  /etc/profile.d/tmux.sh is sourced, e.g. in /etc/profile
 #
 
 if ! rpm -q tmux >/dev/null; then

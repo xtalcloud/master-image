@@ -42,8 +42,10 @@
         "{{template_dir}}/scripts/sshd.sh",
         "{{template_dir}}/scripts/networking.sh",
         "{{template_dir}}/scripts/vim.sh",
+        "{{template_dir}}/scripts/fzf.sh",
         "{{template_dir}}/scripts/zsh.sh",
         "{{template_dir}}/scripts/tmux.sh",
+        "{{template_dir}}/scripts/cli-utils.sh",
         "{{template_dir}}/scripts/cleanup.sh",
         "{{template_dir}}/scripts/minimize.sh"
       ],
@@ -53,24 +55,20 @@
   "variables": {
     "box_basename": "xtal-master",
     "build_directory": "{{template_dir}}/../builds",
-    "build_timestamp": "{{isotime \"2019102650405\"}}",
     "cpus": "4",
-    "disk_size": "30000",
-    "git_revision": "__unknown_git_revision__",
+    "disk_size": "10240",
+    "distro": "",
+    "git_revision": "e49017f03dd0468a0ce180613c1f5043d645b629",
     "guest_additions_url": "",
     "headless": "",
     "http_directory": "{{template_dir}}/http",
-    "http_proxy": "{{env `http_proxy`}}",
-    "https_proxy": "{{env `https_proxy`}}",
     "iso_checksum": "",
     "iso_name": "",
     "memory": "4092",
     "mirror": "",
     "mirror_directory": "",
-    "name": "Xtal EL {{user `vm_version`}}",
-    "no_proxy": "{{env `no_proxy`}}",
-    "template": "xtal-el-x86_64-{{ user `vm_version` }}",
-    "version": "TIMESTAMP",
-    "vm_version": "0.2.11"
+    "name": "Xtal EL {{user `version`}}",
+    "template": "xtal-el-x86_64-{{ user `version` }}",
+    "version": "0.2.13"
   }
 }
