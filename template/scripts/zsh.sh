@@ -54,6 +54,7 @@ PROMPT='%n%F{cyan}@%m%f:%3~%F{cyan}%# %f'
 source /etc/zsh/aliases.zsh
 source /etc/zsh/complete.zsh
 source /etc/zsh/fzf.zsh
+source /etc/zsh/nnn.zsh
 EOF
 
 cat > /etc/zsh/aliases.zsh <<'EOF'

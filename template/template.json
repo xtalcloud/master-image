@@ -30,7 +30,9 @@
     {
       "environment_vars": [
         "HOME_DIR=/root",
-        "IMAGE_NAME='{{user `name`}}'"
+        "IMAGE_NAME='{{user `name`}}'",
+        "BUILD_ID='{{user `git_revision`}}'",
+        "DOCUMENTATION_URL='{{user `repo_url`}}'"
       ],
       "execute_command": "sh -euxc '{{.Vars}} {{.Path}}'",
       "remote_folder": "/root",
@@ -43,6 +45,7 @@
         "{{template_dir}}/scripts/networking.sh",
         "{{template_dir}}/scripts/vim.sh",
         "{{template_dir}}/scripts/fzf.sh",
+        "{{template_dir}}/scripts/nnn.sh",
         "{{template_dir}}/scripts/zsh.sh",
         "{{template_dir}}/scripts/tmux.sh",
         "{{template_dir}}/scripts/cli-utils.sh",
@@ -68,7 +71,8 @@
     "mirror": "",
     "mirror_directory": "",
     "name": "Xtal EL {{user `version`}}",
+    "repo_url": "https://github.com/xtalcloud/master-image",
     "template": "xtal-el-x86_64-{{ user `version` }}",
-    "version": "0.2.13"
+    "version": "0.2.16"
   }
 }

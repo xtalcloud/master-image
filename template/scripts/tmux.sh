@@ -53,7 +53,8 @@ function exit() {
 }
 
 zle -N exit
-bindkey "^d" exit
+stty -a | tr ';' '\012' | grep -q 'eof = \^D' && stty eof undef
+bindkey "^D" exit
 EOF
 done
 
