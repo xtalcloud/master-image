@@ -1,7 +1,7 @@
 #!/bin/sh -eux
 
 MOTD='
-Xtal Systems 2020.
+Xtal Enterprise Linux - Xtal Systems LLC 2021
 '
 
 if [ -d /etc/update-motd.d ]; then

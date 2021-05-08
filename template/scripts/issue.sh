@@ -1,15 +1,11 @@
 #!/bin/sh -eux
 
 MSG_NET='
-WARNING:  Unauthorized access to this system is forbidden and will be
-prosecuted by law. By accessing this system, you consent to your actions
-being monitored and your IP address being logged.
+Authorized uses only. All activity may be monitored and reported.
 '
 
 MSG_LOCAL='
-WARNING:  Unauthorized access to this system is forbidden and will be
-prosecuted by law. By accessing this system, you consent to your actions
-being monitored.
+Authorized uses only. All activity may be monitored and reported.
 '
 
 if [ -d /etc/issue.d ]; then

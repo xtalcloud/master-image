@@ -3,7 +3,7 @@
     {
       "boot_command": "<up><wait><tab> inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg PACKER_USER=root PACKER_AUTHORIZED_KEY={{ .SSHPublicKey | urlquery }}<enter><wait>",
       "boot_wait": "5s",
-      "cpus": "{{ user `cpus` }}",
+      "cpus": "{{user `cpus`}}",
       "disk_size": "{{user `disk_size`}}",
       "guest_os_type": "RedHat_64",
       "guest_additions_mode": "disable",
@@ -11,7 +11,7 @@
       "headless": "{{ user `headless` }}",
       "http_directory": "{{user `http_directory`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_url": "{{template_dir}}/../isos/{{user `iso_name`}}",
+      "iso_url": "{{ user `iso_url` }}",
       "memory": "{{ user `memory` }}",
       "output_directory": "{{ user `build_directory` }}/{{user `template`}}-virtualbox",
       "shutdown_command": "/sbin/halt -h -p",
@@ -43,36 +43,63 @@
         "{{template_dir}}/scripts/metadata.sh",
         "{{template_dir}}/scripts/sshd.sh",
         "{{template_dir}}/scripts/networking.sh",
-        "{{template_dir}}/scripts/vim.sh",
-        "{{template_dir}}/scripts/fzf.sh",
-        "{{template_dir}}/scripts/nnn.sh",
-        "{{template_dir}}/scripts/zsh.sh",
-        "{{template_dir}}/scripts/tmux.sh",
-        "{{template_dir}}/scripts/cli-utils.sh",
+        "{{template_dir}}/scripts/configure_vim.sh",
+        "{{template_dir}}/scripts/install_fzf.sh",
+        "{{template_dir}}/scripts/install_nnn.sh",
+        "{{template_dir}}/scripts/configure_zsh.sh",
+        "{{template_dir}}/scripts/configure_tmux.sh",
+        "{{template_dir}}/scripts/install_bat.sh",
+        "{{template_dir}}/scripts/install_croc.sh",
+        "{{template_dir}}/scripts/install_fd.sh",
+        "{{template_dir}}/scripts/install_lnav.sh",
+        "{{template_dir}}/scripts/install_rg.sh",
         "{{template_dir}}/scripts/cleanup.sh",
         "{{template_dir}}/scripts/minimize.sh"
       ],
       "type": "shell"
     }
   ],
+  "post-processors": [
+    {
+      "type": "amazon-import",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "ami_name": "{{ user `name` }}",
+      "region": "{{user `aws_region`}}",
+      "s3_bucket_name": "{{user `aws_bucket`}}",
+      "s3_key_name": "XtalEL/{{ user `architecture` }}/XtalEL_{{ user `version` }}_{{ user `distro` }}.ova",
+      "tags": {
+        "OS": "XtalEL",
+        "Arch": "{{ user `architecture` }}",
+        "Version": "{{ user `version` }}",
+        "Variant": "{{ user `distro` }}",
+        "Description": "Packer Build of {{ user `name` }}"
+      }
+    }
+   ],
   "variables": {
-    "box_basename": "xtal-master",
+    "aws_access_key": "AKIASFGZ7ADOSJVA334V",
+    "aws_secret_key": "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",
+    "aws_region": "us-east-1",
+    "aws_bucket": "xtal-ec2-import",
+    "box_basename": "xtalEL",
     "build_directory": "{{template_dir}}/../builds",
     "cpus": "4",
     "disk_size": "10240",
     "distro": "",
     "git_revision": "e49017f03dd0468a0ce180613c1f5043d645b629",
     "guest_additions_url": "",
-    "headless": "",
+    "headless": "false",
     "http_directory": "{{template_dir}}/http",
     "iso_checksum": "",
     "iso_name": "",
+    "iso_url": "",
     "memory": "4092",
     "mirror": "",
     "mirror_directory": "",
     "name": "Xtal EL {{user `version`}}",
     "repo_url": "https://github.com/xtalcloud/master-image",
     "template": "xtal-el-x86_64-{{ user `version` }}",
-    "version": "0.2.16"
+    "version": "0.3-rc2"
   }
 }
