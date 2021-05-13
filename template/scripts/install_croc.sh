@@ -18,8 +18,9 @@ printf "Installing command: croc (%s)\n" "$CROC_RELEASE"
 		&& install croc /usr/bin
 )
 
+set +x
 eval $TEST_CMD | grep -q "$CROC_RELEASE" || {
-	printf "Failed to install bat (%s)\n:" "$CROC_RELEASE" 
-	printf "Command '%s' failed with status %s.\n" "$TEST_CMD" "$?"
+	printf "\nFailed to install bat (%s):\n" "$CROC_RELEASE" 
+	printf "Command '%s' failed with status %s.\n\n" "$TEST_CMD" "$?"
 	exit 1
 }

@@ -53,6 +53,7 @@
         "{{template_dir}}/scripts/install_fd.sh",
         "{{template_dir}}/scripts/install_lnav.sh",
         "{{template_dir}}/scripts/install_rg.sh",
+        "{{template_dir}}/scripts/install_z.sh",
         "{{template_dir}}/scripts/cleanup.sh",
         "{{template_dir}}/scripts/minimize.sh"
       ],
@@ -78,16 +79,16 @@
     }
    ],
   "variables": {
-    "aws_access_key": "AKIASFGZ7ADOSJVA334V",
-    "aws_secret_key": "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",
-    "aws_region": "us-east-1",
-    "aws_bucket": "xtal-ec2-import",
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "aws_region": "",
+    "aws_bucket": "",
     "box_basename": "xtalEL",
     "build_directory": "{{template_dir}}/../builds",
     "cpus": "4",
     "disk_size": "10240",
     "distro": "",
-    "git_revision": "e49017f03dd0468a0ce180613c1f5043d645b629",
+    "git_revision": "",
     "guest_additions_url": "",
     "headless": "false",
     "http_directory": "{{template_dir}}/http",
@@ -100,6 +101,6 @@
     "name": "Xtal EL {{user `version`}}",
     "repo_url": "https://github.com/xtalcloud/master-image",
     "template": "xtal-el-x86_64-{{ user `version` }}",
-    "version": "0.3-rc2"
+    "version": "0.3-rc1"
   }
 }

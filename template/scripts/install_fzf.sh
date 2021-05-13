@@ -27,11 +27,13 @@ cd /tmp
 curl -L "$FZF_REPO/releases/download/$FZF_RELEASE/$FZF_ARCHIVE" | tar xz \
 	&& install fzf /usr/bin
 
+set +x
 eval $TEST_CMD_FZF | grep -q "$FZF_RELEASE" || {
-	printf "Failed to install fzf (%s)\n:" "$FZF_RELEASE" 
-	printf "Command '%s' failed with status %s.\n" "$TEST_CMD_FZF" "$?"
+	printf "\nFailed to install fzf (%s):\n" "$FZF_RELEASE" 
+	printf "Command '%s' failed with status %s.\n\n" "$TEST_CMD_FZF" "$?"
 	exit 1
 }
+set -x
 )
 
 printf "Installing command: fzf-tmux (%s)\n" "$FZF_RELEASE"
@@ -42,11 +44,13 @@ curl -L "$FZF_REPO/archive/$FZF_RELEASE.tar.gz" | tar xz \
 	&& cd "fzf-$FZF_RELEASE" \
 	&& install bin/fzf-tmux /usr/bin
 
+set +x
 eval $TEST_CMD_TMUX | grep -q "$FZF_RELEASE" || {
-	printf "Failed to install fzf-tmux (%s)\n:" "$FZF_RELEASE" 
-	printf "Command '%s' failed with status %s.\n" "$TEST_CMD_TMUX" "$?"
+	printf "\nFailed to install fzf-tmux (%s):\n" "$FZF_RELEASE" 
+	printf "Command '%s' failed with status %s.\n\n" "$TEST_CMD_TMUX" "$?"
 	exit 1
 }
+set -x
 )
 
 printf "Installing integrations: vim & zsh plugins for fzf (%s)\n" "$FZF_RELEASE"

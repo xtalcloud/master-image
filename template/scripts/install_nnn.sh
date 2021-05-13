@@ -14,8 +14,13 @@ mkdir -p $ZSH_CUSTOM_DIR
 NNN_RELEASE='4.0'
 NNN_REPO='https://github.com/jarun/nnn'
 NNN_ARCHIVE="nnn-static-$NNN_RELEASE.x86_64.tar.gz"
+NNN_ENV_FILE=/etc/profile.d/nnn.sh
 ADD_CONFIG_TO_SKEL=1
 TEST_CMD='n -V'
+
+touch $NNN_ENV_FILE
+chmod 0644 $NNN_ENV_FILE
+chown root:root $NNN_ENV_FILE
 
 printf "Installing command: nnn (%s)\n" "$NNN_RELEASE"
 
@@ -23,8 +28,12 @@ printf "Installing command: nnn (%s)\n" "$NNN_RELEASE"
 	cd /tmp
 	curl -L "$NNN_REPO/releases/download/v$NNN_RELEASE/$NNN_ARCHIVE" | tar xz
 	install nnn-static /usr/bin/nnn
-
 )
+
+cat >> $NNN_ENV_FILE <<'EOF'
+export NNN_COLORS="6138"
+export NNN_OPTS="adE"
+EOF
 
 printf "Installing integrations: vim & zsh plugins for nnn (%s)\n" "$NNN_RELEASE"
 
@@ -46,36 +55,27 @@ printf "Installing integrations: vim & zsh plugins for nnn (%s)\n" "$NNN_RELEASE
 printf "Installing plugins: nnn (%s)\n" "$NNN_RELEASE"
 
 (
-	cd /tmp/nnn-$NNN_RELEASE
-	mkdir -pm 0700 /root/.config/nnn
-	chown root.root /root/.config/nnn
-	cp -r ./plugins /root/.config/nnn/
+	cd /tmp/nnn-$NNN_RELEASE/plugins
+	sh ./getplugs
 
-	if [ $ADD_CONFIG_TO_SKEL -eq 1 ]; then
-		NNN_PLUGINS_SKEL_DIR=/etc/skel/.config/nnn/plugins
-		NNN_SKEL_TEST_CMD="find $NNN_PLUGINS_SKEL_DIR/ -type f"
-
-		mkdir -pm 0700 /etc/skel/.config/nnn
-		cp -r /root/.config/nnn/* /etc/skel/.config/nnn/
-
-		eval $NNN_SKEL_TEST_CMD || {
-			printf "Failed to copy nnn plugins (%s) to /etc/skel\n:" "$NNN_RELEASE" 
-			printf "Command '%s' failed with status %s.\n" "$NNN_SKEL_TEST_CMD" "$?"
-			exit 1
-		}
-	fi
+	mkdir -pm 0700 $HOME/.local/bin
+	echo 'PATH=$PATH:~/.local/bin' >> $HOME/.zprofile
+	NNN_PLUGIN_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/plugins"
+	ln -s $NNN_PLUGIN_DIR/nuke $HOME/.local/bin/
+	
 )
 
-cat >> /etc/profile.d/nnn.sh <<'EOF'
-export NNN_COLORS="6138"
-export NNN_OPTS="dE"
+cat >> $NNN_ENV_FILE <<'EOF'
+# configure z integration with nnn
+export NNN_PLUG="z:fzz;${NNN_PLUG}"
+
+# configure nuke as file opener
+export NNN_OPTS="${NNN_OTS}c"
+export NNN_OPENER="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/plugins/nuke"
 EOF
 
-chmod 0644 /etc/profile.d/nnn.sh
-chown root.root /etc/profile.d/nnn.sh
-
 zsh -c 'eval $TEST_CMD || {
-	printf "Failed to install nnn (%s)\n:" "$NNN_RELEASE" 
-	printf "Command '%s' failed with status %s.\n" "$TEST_CMD" "$?"
+	printf "\nFailed to install nnn (%s):\n" "$NNN_RELEASE" 
+	printf "Command '%s' failed with status %s.\n\n" "$TEST_CMD" "$?"
 	exit 1
 }' || exit 1

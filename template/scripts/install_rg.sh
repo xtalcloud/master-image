@@ -21,8 +21,9 @@ printf "Installing command: rg (%s)\n" "$RG_RELEASE"
 	mv ./complete/_rg /usr/share/zsh/site-functions/
 )
 
+set +x
 eval $TEST_CMD | grep -q "$RG_RELEASE" || {
-	printf "Failed to install rg (%s)\n:" "$RG_RELEASE" 
-	printf "Command '%s' failed with status %s.\n" "$TEST_CMD" "$?"
+	printf "\nFailed to install rg (%s):\n" "$RG_RELEASE" 
+	printf "Command '%s' failed with status %s.\n\n" "$TEST_CMD" "$?"
 	exit 1
 }

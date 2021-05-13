@@ -75,10 +75,11 @@ if [ $INSTALL_ADDITIONAL_FORMATS -eq 1 ]; then
 			mkdir -pm 0700 $FMTS_SKEL_DIR
 			cd $FMTS_DIR
 			cp *.json $FMTS_SKEL_DIR
-
+			
+			set -x
 			eval $FMTS_SKEL_TEST_CMD || {
-				printf "Failed to copy lnav extra log formats to /etc/skel (%s)\n:" "$LNAV_FMTS_COMMIT" 
-				printf "Command '%s' failed with status %s.\n" "$FMTS_TEST_CMD" "$?"
+				printf "\nFailed to copy lnav extra log formats to /etc/skel (%s):\n" "$LNAV_FMTS_COMMIT" 
+				printf "Command '%s' failed with status %s.\n\n" "$FMTS_TEST_CMD" "$?"
 				exit 1
 			}
 		fi

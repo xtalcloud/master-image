@@ -26,8 +26,9 @@ printf "Installing command: bat (%s)\n" "$BAT_RELEASE"
 	mv ./autocomplete/bat.zsh /usr/share/zsh/site-functions/_bat
 )
 
+set +x
 eval $TEST_CMD | grep -q "$BAT_RELEASE" || {
-	printf "Failed to install bat (%s)\n:" "$BAT_RELEASE" 
-	printf "Command '%s' failed with status %s.\n" "$TEST_CMD" "$?"
+	printf "\nFailed to install bat (%s):\n" "$BAT_RELEASE" 
+	printf "Command '%s' failed with status %s.\n\n" "$TEST_CMD" "$?"
 	exit 1
 }

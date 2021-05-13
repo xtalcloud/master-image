@@ -21,7 +21,8 @@ printf "Installing command: fd (%s)\n" "$FD_RELEASE"
 	mv ./autocomplete/_fd /usr/share/zsh/site-functions/
 )
 
+set +x
 eval $TEST_CMD | grep -q "$FD_RELEASE" || {
-	printf "Failed to install fd (%s)\n:" "$FD_RELEASE" 
-	printf "Command '%s' failed with status %s.\n" "$TEST_CMD" "$?"
+	printf "\nFailed to install fd (%s):\n" "$FD_RELEASE" 
+	printf "Command '%s' failed with status %s.\n\n" "$TEST_CMD" "$?"
 }
