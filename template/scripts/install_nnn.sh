@@ -31,8 +31,65 @@ printf "Installing command: nnn (%s)\n" "$NNN_RELEASE"
 )
 
 cat >> $NNN_ENV_FILE <<'EOF'
-export NNN_COLORS="6138"
-export NNN_OPTS="adE"
+#!/bin/bash
+
+set -ex
+
+export NNN_OPENER NNN_OPTS \
+    NNN_PLUG NNN_COLORS NNN_TRASH    
+
+USER_CFG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+PLUGIN_DIR="${USER_CFG_HOME}/nnn/plugins"
+
+NNN_COLORS="6138"
+NNN_OPTS="adEPp"
+NNN_PLUG='t:treeview;z:fzz;p:preview-tui'
+
+# Set nuke as default file opener when using nnn
+# also available as a standalone command
+
+NNN_OPENER="${PLUGIN_DIR}/nuke"
+# -c option tells NNN to not user an GUI opener
+[ "$NNN_OPTS" != "${NNN_OPTS/*c*}" ] \
+    && NNN_OPTS="${NNN_OPTS}c"
+      
+
+
+set +ex
+EOF
+
+
+cat >> $NNN_ZSH_FILE <<'EOF'
+n ()
+{
+    # Block nesting of nnn in subshells
+    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    # The default behaviour is to cd on quit (nnn checks if NNN_TMPFILE is set)
+    # To cd on quit only on ^G, remove the "export" as in:
+    #     NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+    # NOTE: NNN_TMPFILE is fixed, should not be modified
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    # Unmask ^Q (, ^V etc.) (if required, see `stty -a`) to Quit nnn
+    # stty start undef
+    # stty stop undef
+    # stty lwrap undef
+    # stty lnext undef
+
+    nnn -${NNN_OPTS} "$@"
+
+    if [ -f "$NNN_TMPFILE" ]; then
+        source "$NNN_TMPFILE"
+        rm -f "$NNN_TMPFILE" > /dev/null
+    fi
+}
+
+zle -N n
+bindkey '^[f' n
 EOF
 
 printf "Installing integrations: vim & zsh plugins for nnn (%s)\n" "$NNN_RELEASE"
