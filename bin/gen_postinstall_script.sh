@@ -5,7 +5,8 @@
 # from a script in the order that Packer would
 # execute them during bootstrapping
 
-cat \
+# the sed command will filter out the shebangl ines (except the first)
+sed -e '/^\(#!\)/{x;/./!{x;h;b;};d}' << cat \
 ../template/scripts/motd.sh \
 ../template/scripts/issue.sh \
 ../template/scripts/metadata.sh \
