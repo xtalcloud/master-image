@@ -1,8 +1,28 @@
 # Enterprise Linux Master Image
 
+## Requirements
+
+You must install the packer executable here: https://www.packer.io/downloads
+
 ## Building
 
-`packer build -force -var-file ".\packer\vars\rhel\x86_64\8.3.json" .\packer\template.json`
+The Packer template itself is located here at:
+
+  ./template/template.json
+
+You can choose exactly which Enterprise Linux ISO you wish to use by selecting the appropriate variables file located in:
+
+  ./template/vars/
+   
+For example, to build a system image using Red Hat Enterprise Linux 8.3, you would run:
+
+On Linux:
+
+ ./path/to/packer build -force -var-file "./template/vars/rhel/x86_64/8.3.json" ./template/template.json
+
+On Windows:
+
+ .\path\to\packer build -force -var-file ".\template\vars\rhel\x86_64\8.3.json" .\template\template.json
 
 ## Overview
 
