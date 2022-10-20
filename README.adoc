@@ -1,0 +1,24 @@
+# Enterprise Linux Master Image
+
+## Building
+
+`packer build -force -var-file ".\packer\vars\rhel\x86_64\8.3.json" .\packer\template.json`
+
+## Overview
+
+Installed by kickstart file via rpm:
+
+* vim
+* tmux
+* zsh
+
+Installed via shell script as executable binary file
+
+* bat
+* croc
+* fd
+* fzf
+* lnav
+* nnn
+* rg
+* z
