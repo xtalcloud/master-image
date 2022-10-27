@@ -1,4 +1,4 @@
-# Enterprise Linux Master Image
+# Enterprise Linux Base Image
 
 ## Requirements
 
