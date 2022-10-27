@@ -1,37 +1,26 @@
-<<<<<<< Updated upstream
 # Enterprise Linux Master Image
 
 ## Requirements
 
-You must install the packer executable here: https://www.packer.io/downloads
+You must have a recent release of `packer` in your path. You can install a binary executable here: https://www.packer.io/downloads
 
 ## Building
 
 The Packer template itself is located here at:
 
-  ./template/template.json
-
-You can choose exactly which Enterprise Linux ISO you wish to use by selecting the appropriate variables file located in:
-
-  ./template/vars/
-   
-For example, to build a system image using Red Hat Enterprise Linux 8.3, you would run:
-
-On Linux:
-
- ./path/to/packer build -force -var-file "./template/vars/rhel/x86_64/8.3.json" ./template/template.json
-
-On Windows:
-
- .\path\to\packer build -force -var-file ".\template\vars\rhel\x86_64\8.3.json" .\template\template.json
+  packer build .
 
 ## Overview
 
 Installed by kickstart file via rpm:
 
+### User Interface
+
 * vim
 * tmux
 * zsh
+
+### Command Line Tools
 
 Installed via shell script as executable binary file
 
@@ -43,19 +32,12 @@ Installed via shell script as executable binary file
 * nnn
 * rg
 * z
-=======
-# elx : enterprise linux base image by xtalcloud
-
-## build instructions
-
-`packer build -force -var-file ".\packer\vars\rhel\x86_64\8.3.json" .\packer\template.json`
 
 
-## changes
+## Changes
 
 ### v0.3-rc2
 - tmux upgrade to 3.2, syntax of tmux.conf changed
 - zsh echoing CTRL sequences has been fixed
 - shellcheck was added
 - added z to work with nnn
->>>>>>> Stashed changes
