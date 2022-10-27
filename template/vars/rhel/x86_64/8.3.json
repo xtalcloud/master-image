@@ -1,8 +1,0 @@
-{
-    "distro": "RHEL",
-    "architecture": "x86_64",
-    "iso_checksum": "30fd8dff2d29a384bd97886fa826fa5be872213c81e853eae3f9d9674f720ad0",
-    "iso_name": "rhel-8.3-{{ user `architecture` }}-dvd.iso",
-    "iso_url": "file://m:/imgs/{{ user `iso_name` }}",
-    "_iso_url": "{{template_dir}}/../{{user `iso_name`}}"
-}
