@@ -1,0 +1,11 @@
+{
+	"hostname": "elx",
+	"grub_password": "yourgrubpass",
+	"root_password": "yourrootpass",
+	"root_authorized_keys": [ "ssh-ed25519 AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVrkz4TjG" ],
+
+	"aws_access_key": "ASBS8TM706780UVQ2974",
+	"aws_secret_key": "Vij7gcK4aI8ot1Y8TVPOVxGiEdWW2NIt8ym77VLS",
+	"aws_region": "us-east-1",
+	"aws_bucket": "your-ami-import-bucket"
+}

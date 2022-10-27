@@ -1,1 +1,5 @@
-packer_cache
+packer_cache/*
+.DS_Store
+*swo
+*swp
+*~

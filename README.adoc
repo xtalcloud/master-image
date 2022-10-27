@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # Enterprise Linux Master Image
 
 ## Requirements
@@ -42,3 +43,19 @@ Installed via shell script as executable binary file
 * nnn
 * rg
 * z
+=======
+# elx : enterprise linux base image by xtalcloud
+
+## build instructions
+
+`packer build -force -var-file ".\packer\vars\rhel\x86_64\8.3.json" .\packer\template.json`
+
+
+## changes
+
+### v0.3-rc2
+- tmux upgrade to 3.2, syntax of tmux.conf changed
+- zsh echoing CTRL sequences has been fixed
+- shellcheck was added
+- added z to work with nnn
+>>>>>>> Stashed changes

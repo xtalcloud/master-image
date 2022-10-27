@@ -1,0 +1,15 @@
+# elx : enterprise linux base image by xtalcloud
+
+# changes: v0.3-rc2
+- tmux upgrade to 3.2, syntax of tmux.conf changed
+- zsh echoing CTRL sequences has been fixed
+- shellcheck was added
+- added z to work with nnn
+
+# changes: v0.3-rc3
+- zsh/tmux integration
+
+
+# changes: v0.3-rc5
+- entire project has ben rewritten in HCL, still working out the kinks
+
