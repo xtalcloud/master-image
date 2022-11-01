@@ -1,5 +1,7 @@
 # Enterprise Linux Base Image
 
+image::screenshot.png[Screenshot with some glimpses of workflow.]
+
 ## Requirements
 
 You must have a recent release of `packer` in your path. You can install a binary executable here: https://www.packer.io/downloads
@@ -15,8 +17,6 @@ The Packer template itself is located here at:
 Installed by kickstart file via rpm:
 
 ### User Interface
-
-image::screenshot.png[Screenshot with some glimpses of workflow.]
 
 * vim
 * tmux
