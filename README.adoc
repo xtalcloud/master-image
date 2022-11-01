@@ -16,6 +16,8 @@ Installed by kickstart file via rpm:
 
 ### User Interface
 
+image::screenshot.png[Screenshot with some glimpses of workflow.]
+
 * vim
 * tmux
 * zsh
