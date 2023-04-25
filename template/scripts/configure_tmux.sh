@@ -1,4 +1,4 @@
-#!/bin/sh -eux
+#!/bin/sh
 
 #
 #  TMUX
@@ -11,6 +11,13 @@
 #  To disable this functionality set TMUX_AUTO_ATTACH to any
 #  value other than 1.
 #
+
+# Configure debugging
+set -eux
+set -o pipefail
+command -v bc || dnf install -y bc
+command -v ncurses || dnf install -y ncurses
+PS4='$(tput setaf 4)$(printf "%-12s\\t%.3fs\\t@line\\t%-10s" $(date +%T) $(echo $(date "+%s.%3N")-'$(date "+%s.%3N")' | bc ) $LINENO)$(tput sgr 0)'
 
 if ! rpm -q tmux >/dev/null; then
   dnf install -y tmux
@@ -106,3 +113,7 @@ set -g status off
 set -g pane-active-border-fg 'cyan'
 set -g status-bg 'cyan'
 EOF
+
+echo "Succesfully configured tmux!"
+
+echo "Succesfully configured tmux!"
