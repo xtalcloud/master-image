@@ -92,6 +92,5 @@ chsh -s /usr/bin/zsh
 echo '# ~/.zshrc' > /root/.zshrc
 echo '# ~/.zshrc' > /etc/skel/.zshrc
 
-echo "Successfully configured zsh!"
-
+echo "Succesfully installed / configured zsh!"
 echo "Successfully configured zsh!"
