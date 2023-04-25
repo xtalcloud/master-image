@@ -36,10 +36,6 @@ printf "Installing command: nnn (%s)\n" "$NNN_RELEASE"
 )
 
 cat >> $NNN_ENV_FILE <<'EOF'
-#!/bin/bash
-
-set -ex
-
 export NNN_OPENER NNN_OPTS \
     NNN_PLUG NNN_COLORS NNN_TRASH    
 
@@ -58,9 +54,6 @@ NNN_OPENER="${PLUGIN_DIR}/nuke"
 [ "$NNN_OPTS" != "${NNN_OPTS/*c*}" ] \
     && NNN_OPTS="${NNN_OPTS}c"
       
-
-
-set +ex
 EOF
 
 
@@ -137,7 +130,5 @@ export NNN_OPENER="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/plugins/nuke"
 EOF
 
 zsh -c 'eval $TEST_CMD'
-
-echo "Succesfully installed nnn!"
 
 echo "Succesfully configured nnn!"
