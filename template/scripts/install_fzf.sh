@@ -4,21 +4,28 @@
 #  Install: fzf
 #
 
-VIM_PLUG_DIR=/usr/share/vim/vimfiles/pack/plugins
-mkdir -p $VIM_PLUG_DIR
-
-FZF_VIM_DIR="$VIM_PLUG_DIR/start/fzf/plugin"
-mkdir -p $FZF_VIM_PATH
-
-ZSH_SHARED_DIR=/usr/share/zsh/site-functions
+FZF_RELEASE='0.39.0'
 ZSH_CUSTOM_DIR=/etc/zsh
-mkdir -p $ZSH_CUSTOM_DIR
+ZSH_SHARED_DIR=/usr/share/zsh/site-functions
+VIM_PLUG_DIR=/usr/share/vim/vimfiles/pack/plugins
+FZF_VIM_DIR="$VIM_PLUG_DIR/start/fzf/plugin"
 
-FZF_RELEASE='0.26.0'
+# Configure debugging
+set -eux
+set -o pipefail
+command -v bc || dnf install -y bc
+command -v ncurses || dnf install -y ncurses
+PS4='$(tput setaf 4)$(printf "%-12s\\t%.3fs\\t@line\\t%-10s" $(date +%T) $(echo $(date "+%s.%3N")-'$(date "+%s.%3N")' | bc ) $LINENO)$(tput sgr 0)'
+
 FZF_REPO='https://github.com/junegunn/fzf'
-FZF_ARCHIVE="fzf-$FZF_RELEASE-linux_amd64.tar.gz"
 TEST_CMD_FZF='fzf --version'
 TEST_CMD_TMUX='fzf-tmux --version'
+FZF_ARCHIVE="fzf-$FZF_RELEASE-linux_amd64.tar.gz"
+FZF_ARCHIVE="fzf-$FZF_RELEASE-linux_arm64.tar.gz"
+
+mkdir -p $VIM_PLUG_DIR
+mkdir -p $FZF_VIM_DIR
+mkdir -p $ZSH_CUSTOM_DIR
 
 printf "Installing command: fzf (%s)\n" "$FZF_RELEASE"
 
@@ -67,6 +74,4 @@ export FZF_CTRL_R_OPTS="--margin 15%,5%"
 EOF
 )
 
-
-
-
+echo "Successfully installed fzf!"
