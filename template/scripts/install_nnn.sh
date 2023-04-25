@@ -4,20 +4,25 @@
 #  Install: nnn
 #
 
-set -eux
-set -o pipefail
-
+NNN_RELEASE='4.8'
 ZSH_SHARED_DIR=/usr/share/zsh/site-functions
 ZSH_CUSTOM_DIR=/etc/zsh
-mkdir -p $ZSH_CUSTOM_DIR
 
-NNN_RELEASE='4.0'
+# Configure debugging
+set -eux
+set -o pipefail
+command -v bc || dnf install -y bc
+command -v ncurses || dnf install -y ncurses
+PS4='$(tput setaf 4)$(printf "%-12s\\t%.3fs\\t@line\\t%-10s" $(date +%T) $(echo $(date "+%s.%3N")-'$(date "+%s.%3N")' | bc ) $LINENO)$(tput sgr 0)'
+
 NNN_REPO='https://github.com/jarun/nnn'
 NNN_ARCHIVE="nnn-static-$NNN_RELEASE.x86_64.tar.gz"
 NNN_ENV_FILE=/etc/profile.d/nnn.sh
+NNN_ZSH_FILE=$ZSH_CUSTOM_DIR/nnn.zsh
 ADD_CONFIG_TO_SKEL=1
 TEST_CMD='n -V'
 
+mkdir -p $ZSH_CUSTOM_DIR
 touch $NNN_ENV_FILE
 chmod 0644 $NNN_ENV_FILE
 chown root:root $NNN_ENV_FILE
@@ -131,8 +136,8 @@ export NNN_OPTS="${NNN_OTS}c"
 export NNN_OPENER="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/plugins/nuke"
 EOF
 
-zsh -c 'eval $TEST_CMD || {
-	printf "\nFailed to install nnn (%s):\n" "$NNN_RELEASE" 
-	printf "Command '%s' failed with status %s.\n\n" "$TEST_CMD" "$?"
-	exit 1
-}' || exit 1
+zsh -c 'eval $TEST_CMD'
+
+echo "Succesfully installed nnn!"
+
+echo "Succesfully configured nnn!"
