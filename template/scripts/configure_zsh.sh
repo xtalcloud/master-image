@@ -1,8 +1,15 @@
-#!/bin/sh -eux
+#!/bin/sh
 
 # 
 #  zsh configration
 #
+
+# Configure debugging
+set -eux
+set -o pipefail
+command -v bc || dnf install -y bc
+command -v ncurses || dnf install -y ncurses
+PS4='$(tput setaf 4)$(printf "%-12s\\t%.3fs\\t@line\\t%-10s" $(date +%T) $(echo $(date "+%s.%3N")-'$(date "+%s.%3N")' | bc ) $LINENO)$(tput sgr 0)'
 
 ZSH_CUSTOM_DIR=/etc/zsh
 
@@ -80,6 +87,11 @@ EOF
 
 echo "# /etc/zsh/complete.zsh" > /etc/zsh/complete.zsh
 
+command -v chsh &>/dev/null || dnf install -y util-linux-user
 chsh -s /usr/bin/zsh
 echo '# ~/.zshrc' > /root/.zshrc
 echo '# ~/.zshrc' > /etc/skel/.zshrc
+
+echo "Successfully configured zsh!"
+
+echo "Successfully configured zsh!"
