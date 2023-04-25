@@ -81,12 +81,12 @@ cat >> "$file" <<'EOF'
 # ~/.zprofile below. If these files are inaccessible because the user is not
 # logged in, log in on a tty other than tty1 and edit ~/.zprofile as mentioned.
 #
-if [ $TMUX_AUTO_ATTACH -eq 1 ] && [ `tty` = '/dev/tty1' ]; then
+if [ ${TMUX_AUTO_ATTACH:-0} -eq 1 ] && [ `tty` = '/dev/tty1' ]; then
 function logoff {
   tmux detach -P
 }
 function exit() {
-  if [ "$TMUX" ] && [ "$TMUX_AUTO_ATTACH" -eq 1 ]; then
+  if [ "$TMUX" ] && [ ${TMUX_AUTO_ATTACH:-0} -eq 1 ]; then
     n_panes="$( tmux list-panes | wc -l )"
     n_windows="$( tmux list-windows | wc -l )"
 
