@@ -4,6 +4,10 @@
 #  Configure: vim
 #
 
+set -eux
+set -o pipefail
+PS4='$(printf "%-12s\\t%.3fs\\t@line\\t%-10s" $(date +%T) $(echo $(date "+%s.%3N")-'$(date "+%s.%3N")' | bc ) $LINENO)'
+
 VIM_PLUG_DIR=/usr/share/vim/vimfiles/pack/plugins
 VIM_POLYGLOT_RELEASE='4.17.0'
 
@@ -37,9 +41,5 @@ export EDITOR=vim
 export VISUAL=vim
 EOD
 
-eval $TEST_CMD || {
-#printf "Failed to install vim-polyglot plugin (%s) for vim\n:" "$VIM_POLYGLOT_RELEASE" 
-#printf "Command '%s' failed with status %s.\n" "$TEST_CMD" "$?"
-#exit 1
-echo "failed test $TEST_CMD"
-}
+eval $TEST_CMD
+echo "Success fully configured vim!"
