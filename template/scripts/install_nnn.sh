@@ -29,11 +29,16 @@ chown root:root $NNN_ENV_FILE
 
 printf "Installing command: nnn (%s)\n" "$NNN_RELEASE"
 
-(
+if [ $(uname -m) = "x86_64" ]; then
 	cd /tmp
 	curl -L "$NNN_REPO/releases/download/v$NNN_RELEASE/$NNN_ARCHIVE" | tar xz
 	install nnn-static /usr/bin/nnn
-)
+elif [ $(uname -m) = "aarch64" ]; then
+  dnf install -y https://rpm.spencersmolen.com/nnn-4.8-1.el9.aarch64.rpm
+else
+  echo "Architecture not recognized!"
+  exit 1
+fi
 
 cat >> $NNN_ENV_FILE <<'EOF'
 export NNN_OPENER NNN_OPTS \
@@ -53,12 +58,11 @@ NNN_OPENER="${PLUGIN_DIR}/nuke"
 # -c option tells NNN to not user an GUI opener
 [ "$NNN_OPTS" != "${NNN_OPTS/*c*}" ] \
     && NNN_OPTS="${NNN_OPTS}c"
-      
 EOF
 
 
 cat >> $NNN_ZSH_FILE <<'EOF'
-n ()
+function n ()
 {
     # Block nesting of nnn in subshells
     if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
@@ -87,7 +91,11 @@ n ()
 }
 
 zle -N n
-bindkey '^[f' n
+bindkey '^f' n
+EOF
+
+cat >> /etc/zshrc <<EOF
+. $NNN_ZSH_FILE
 EOF
 
 printf "Installing integrations: vim & zsh plugins for nnn (%s)\n" "$NNN_RELEASE"
@@ -98,11 +106,11 @@ printf "Installing integrations: vim & zsh plugins for nnn (%s)\n" "$NNN_RELEASE
 	cd "nnn-$NNN_RELEASE"
 
 	chmod 644 ./misc/auto-completion/zsh/_nnn
-	chown root.root ./misc/auto-completion/zsh/_nnn
+	chown root:root ./misc/auto-completion/zsh/_nnn
 	cp ./misc/auto-completion/zsh/_nnn $ZSH_SHARED_DIR/
 
 	chmod 644 ./misc/quitcd/quitcd.bash_zsh
-	chown root.root ./misc/quitcd/quitcd.bash_zsh
+	chown root:root ./misc/quitcd/quitcd.bash_zsh
 	cp ./misc/quitcd/quitcd.bash_zsh $ZSH_CUSTOM_DIR/nnn.zsh
 
 )
@@ -110,17 +118,30 @@ printf "Installing integrations: vim & zsh plugins for nnn (%s)\n" "$NNN_RELEASE
 printf "Installing plugins: nnn (%s)\n" "$NNN_RELEASE"
 
 (
-	cd /tmp/nnn-$NNN_RELEASE/plugins
-	sh ./getplugs
+  # Install plugins for current user
+	/tmp/nnn-$NNN_RELEASE/plugins/getplugs
+  # Install plugins in /etc/skel
+  mkdir -p /etc/skel/.config
+  XDG_CONFIG_HOME=/etc/skel/.config /tmp/nnn-$NNN_RELEASE/plugins/getplugs
 
+  # current user
 	mkdir -pm 0700 $HOME/.local/bin
+  # /etc/skel
+	mkdir -pm 0700 /etc/skel/.local/bin
+
+  # current user
 	echo 'PATH=$PATH:~/.local/bin' >> $HOME/.zprofile
-	NNN_PLUGIN_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/plugins"
-	ln -s $NNN_PLUGIN_DIR/nuke $HOME/.local/bin/
+  # /etc/skel
+	echo 'PATH=$PATH:~/.local/bin' >> /etc/skel/.zprofile
+
+  # current user
+	ln -sf ${XDG_CONFIG_HOME:-$HOME/.config}/nnn/plugins/nuke $HOME/.local/bin/
+  # /etc/skel
+	ln -sf /etc/skel/.config/nnn/plugins/nuke /etc/skel/.local/bin/
 	
 )
 
-cat >> $NNN_ENV_FILE <<'EOF'
+cat > $NNN_ENV_FILE <<'EOF'
 # configure z integration with nnn
 export NNN_PLUG="z:fzz;${NNN_PLUG}"
 
