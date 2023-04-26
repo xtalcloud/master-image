@@ -25,5 +25,8 @@ printf "Installing command: z (%s)\\n" "$Z_RELEASE"
 	mkdir -p $Z_TARGET_DIR
 	curl -Lo $Z_TARGET_DIR/z.sh $Z_REPO_ROOT/z.sh
 	curl -Lo /usr/share/man/man1/z\.1 $Z_REPO_ROOT/z.1
+	# current user
 	echo ". $Z_TARGET_DIR" >> $HOME/.zshrc
+	# /etc/skel
+	echo ". $Z_TARGET_DIR" >> /etc/skel/.zshrc
 )
