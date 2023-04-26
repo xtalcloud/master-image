@@ -4,9 +4,6 @@
 #  Install: z
 #
 
-#set +x
-#set -o pipefail
-
 Z_RELEASE='1.11'
 Z_REPO='https://github.com/rupa/z'
 
