@@ -19,6 +19,7 @@ set -ex
 ./install_fd.sh
 ./install_lnav.sh
 ./install_rg.sh
+./install_htop.sh
 ./install_z.sh
 #./cleanup.sh
 #./minimize.sh
