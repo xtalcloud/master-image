@@ -4,26 +4,20 @@
 #  Install: ripgrep (rg)
 #
 
-RG_RELEASE='12.1.1'
-RG_REPO='https://github.com/BurntSushi/ripgrep'
-RG_ARCHIVE="ripgrep-$RG_RELEASE-x86_64-unknown-linux-musl.tar.gz"
-TEST_CMD='rg -V'
+# Configure debugging
+set -eux
+set -o pipefail
+command -v bc || dnf install -y bc
+command -v tput || dnf install -y ncurses
+PS4='$(tput setaf 4)$(printf "%-12s\\t%.3fs\\t@line\\t%-10s" $(date +%T) $(echo $(date "+%s.%3N")-'$(date "+%s.%3N")' | bc ) $LINENO)$(tput sgr0)'
 
-printf "Installing command: rg (%s)\n" "$RG_RELEASE"
+printf "Installing command: rg\n"
 
-(
-	cd /tmp
-	curl -sSL "$RG_REPO/releases/download/$RG_RELEASE/$RG_ARCHIVE" | tar xz
-	cd "ripgrep-$RG_RELEASE-x86_64-unknown-linux-musl"
-	install rg /usr/bin/
-	chmod 644 ./complete/_rg
-	chown root.root ./complete/_rg
-	mv ./complete/_rg /usr/share/zsh/site-functions/
-)
-
-set +x
-eval $TEST_CMD | grep -q "$RG_RELEASE" || {
-	printf "\nFailed to install rg (%s):\n" "$RG_RELEASE" 
-	printf "Command '%s' failed with status %s.\n\n" "$TEST_CMD" "$?"
-	exit 1
-}
+if [ $(uname -m) = "aarch64" ]; then
+dnf install -y https://dl.fedoraproject.org/pub/epel/9/Everything/aarch64/Packages/r/ripgrep-13.0.0-6.el9.aarch64.rpm
+elif [ $(uname -m) = "x86_64" ]; then
+dnf install -y https://dl.fedoraproject.org/pub/epel/9/Everything/x86_64/Packages/r/ripgrep-13.0.0-6.el9.x86_64.rpm
+else
+echo "Architecture not supported!"
+exit 1
+fi
