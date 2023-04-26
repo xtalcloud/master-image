@@ -8,7 +8,7 @@
 set -eux
 set -o pipefail
 command -v bc || dnf install -y bc
-command -v ncurses || dnf install -y ncurses
+command -v tput || dnf install -y ncurses
 PS4='$(tput setaf 4)$(printf "%-12s\\t%.3fs\\t@line\\t%-10s" $(date +%T) $(echo $(date "+%s.%3N")-'$(date "+%s.%3N")' | bc ) $LINENO)$(tput sgr 0)'
 
 ZSH_CUSTOM_DIR=/etc/zsh
