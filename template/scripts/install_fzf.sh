@@ -43,7 +43,7 @@ printf "Installing command: fzf-tmux (%s)\n" "$FZF_RELEASE"
   cd /tmp
   curl -L "$FZF_REPO/archive/$FZF_RELEASE.tar.gz" | tar xz
   cd "fzf-$FZF_RELEASE"
-  install bin/fzf-tmux /usr/bin \
+  install bin/fzf-tmux /usr/bin
   /tmp/fzf-$FZF_RELEASE/install --key-bindings --completion --update-rc
   eval $TEST_CMD_TMUX
 )
@@ -59,7 +59,7 @@ printf "Installing integrations: vim & zsh plugins for fzf (%s)\n" "$FZF_RELEASE
   cat > /etc/profile.d/fzf.sh <<'EOF'
   export FZF_TMUX_OPTS="-d 40%"
   export FZF_CTRL_R_OPTS="--margin 15%,5%"
-  EOF
+EOF
 )
 
 echo "Successfully installed fzf!"
