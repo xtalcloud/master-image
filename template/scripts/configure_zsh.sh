@@ -58,9 +58,7 @@ bindkey '^[v' edit-command-line
 export LANG=en_US.UTF-8
 PROMPT='%n%F{cyan}@%m%f:%3~%F{cyan}%# %f'
 
-. /etc/zsh/aliases.zsh
-. /etc/zsh/complete.zsh
-. /etc/zsh/**.zsh
+fpath+=/etc/zsh
 EOF
 
 cat > /etc/zsh/aliases.zsh <<'EOF'
