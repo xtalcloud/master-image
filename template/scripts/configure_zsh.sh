@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# 
+#
 #  zsh configration
 #
 
@@ -14,10 +14,19 @@ PS4='$(tput setaf 4)$(printf "%-12s\\t%.3fs\\t@line\\t%-10s" $(date +%T) $(echo 
 ZSH_CUSTOM_DIR=/etc/zsh
 
 if ! rpm -q zsh >/dev/null; then
-  dnf install -y zsh
+  dnf install -yq zsh
+fi
+if ! rpm -q git >/dev/null; then
+  dnf install -yq git
+fi
+if ! rpm -q util-linux-user >/dev/null; then
+  dnf install -yq util-linux-user
 fi
 
+
 mkdir -p $ZSH_CUSTOM_DIR
+git clone https://github.com/sindresorhus/pure.git "$ZSH_CUSTOM_DIR/pure"
+
 cat >> /etc/zshrc <<'EOF'
 unsetopt BEEP
 
@@ -27,10 +36,14 @@ setopt autopushd
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
+
+# CTRL+UP, CTRL+DOWN search history forwards and backwards respectively
 bindkey "^[[A" history-beginning-search-backward-end
 bindkey "^[[B" history-beginning-search-forward-end
 
-ZPATH=/etc/zsh:$ZPATH
+# CTRL+j, CTRL+k search history forwards and backwards respectively
+bindkey "^k" history-beginning-search-backward-end
+bindkey "^j" history-beginning-search-forward-end
 
 # Basic auto/tab complete:
 autoload -U compinit
@@ -51,17 +64,6 @@ setopt appendhistory        # Append history to the history file (no overwriting
 setopt sharehistory         # Share history across terminals, e.g. when using tmux
 setopt incappendhistory     # Immediately append to the history file, not just when a term is killed
 
-# Edit line in vim with ctrl-v:
-autoload edit-command-line; zle -N edit-command-line
-bindkey '^[v' edit-command-line
-
-export LANG=en_US.UTF-8
-PROMPT='%n%F{cyan}@%m%f:%3~%F{cyan}%# %f'
-
-fpath+=/etc/zsh
-EOF
-
-cat > /etc/zsh/aliases.zsh <<'EOF'
 alias ll='ls -lh -F --group-directories-first --color=auto'
 alias ls='ls -F --color=auto'
 alias l='ls -F --color=auto'
@@ -81,9 +83,17 @@ alias 6='cd -6'
 alias 7='cd -7'
 alias 8='cd -8'
 alias 9='cd -9'
-EOF
 
-echo "# /etc/zsh/complete.zsh" > /etc/zsh/complete.zsh
+# Edit line in vim with ctrl-v:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^[v' edit-command-line
+
+fpath+=(/etc/zsh /etc/zsh/pure)
+
+export LANG=en_US.UTF-8
+autoload -U promptinit; promptinit
+prompt pure
+EOF
 
 command -v chsh &>/dev/null || dnf install -y util-linux-user
 chsh -s /usr/bin/zsh
